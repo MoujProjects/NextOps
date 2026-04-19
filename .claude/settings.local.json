@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(pnpm --version)",
+      "Bash(npm install *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm approve-builds *)",
+      "Bash(pnpm build *)",
+      "Bash(psql \"postgresql://postgres:eO2FzsApkH5t1fsO@db.sbmqzngsdjinrgykvqfm.supabase.co:5432/postgres\")",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}

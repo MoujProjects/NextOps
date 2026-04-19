@@ -1,0 +1,20 @@
+{
+  "name": "nexops",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "lint": "pnpm -r lint",
+    "supabase:migrate": "supabase db push",
+    "sdk:build": "pnpm --filter @nexops/sdk build"
+  },
+  "devDependencies": {
+    "supabase": "^2.92.1",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  }
+}

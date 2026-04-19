@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+
+# Build outputs
+packages/*/dist/
+apps/*/dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+apps/web/.env.local
+apps/web/.env.*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Turbo
+.turbo
+
+# Testing
+playwright-report/
+test-results/
+.claude/
