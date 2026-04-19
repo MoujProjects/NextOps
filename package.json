@@ -10,7 +10,6 @@
     "sdk:build": "pnpm --filter @nexops/sdk build"
   },
   "devDependencies": {
-    "supabase": "^2.92.1",
     "typescript": "^5.4.5"
   },
   "engines": {
