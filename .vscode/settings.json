@@ -1,0 +1,12 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^cd \"c:\\\\Users\\\\mboukane\\\\Desktop\\\\Prive\\\\Embeded Soft Projects\\\\HEX-Technologies\\\\NextOPS\" ; git remote set-url origin https://github\\.com/MoujProjects/NextOps\\.git ; git push -u origin main --force$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd \"c:\\\\Users\\\\mboukane\\\\Desktop\\\\Prive\\\\Embeded Soft Projects\\\\HEX-Technologies\\\\NextOPS\" ; git add vercel\\.json ; git commit -m \"fix: change cron to daily for Vercel Hobby plan\" ; git push$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
