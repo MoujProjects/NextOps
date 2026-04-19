@@ -26,7 +26,7 @@ export function SignupForm() {
       password,
       options: {
         data: { org_name: orgName },
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${location.origin}/callback`,
       },
     });
     setLoading(false);

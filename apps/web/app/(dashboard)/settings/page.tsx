@@ -1,4 +1,4 @@
-import { requireUser } from "@/lib/supabase/server";
+import { requireUserWithOrg } from "@/lib/supabase/server";
 import { GlassPanel } from "@/components/glass/glass-panel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle } from "lucide-react";
 
 export default async function SettingsPage() {
-  const user = await requireUser();
+  const { user, org } = await requireUserWithOrg();
 
   return (
     <div className="space-y-6 max-w-2xl">
@@ -44,11 +44,11 @@ export default async function SettingsPage() {
           <GlassPanel className="p-6 space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="org-name">Organization name</Label>
-              <Input id="org-name" placeholder="Acme Inc." />
+              <Input id="org-name" placeholder="Acme Inc." defaultValue={org.name} />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="org-slug">Slug</Label>
-              <Input id="org-slug" placeholder="acme" />
+              <Input id="org-slug" placeholder="acme" defaultValue={org.slug} />
               <p className="text-xs text-[var(--text-muted)]">Used in public status page URLs</p>
             </div>
             <Button>Save organization</Button>

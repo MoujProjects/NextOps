@@ -35,7 +35,7 @@ export function LoginForm() {
   async function handleOAuth(provider: "google" | "github") {
     await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${location.origin}/auth/callback` },
+      options: { redirectTo: `${location.origin}/callback` },
     });
   }
 

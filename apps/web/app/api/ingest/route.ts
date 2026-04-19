@@ -4,6 +4,7 @@ import { logs, apiKeys } from "@/lib/db/schema";
 import { ingestLogSchema } from "@nexops/shared";
 import { eq } from "drizzle-orm";
 import { logger } from "@/lib/utils/logger";
+import { decryptApiKey } from "@/lib/crypto/vault";
 
 export const runtime = "nodejs";
 
@@ -15,14 +16,32 @@ export async function POST(req: NextRequest) {
     }
     const token = authHeader.slice(7);
 
-    // Validate token against API keys
-    const [keyRecord] = await db
-      .select({ orgId: apiKeys.orgId })
+    // Validate token by decrypting active keys and comparing
+    const activeKeys = await db
+      .select({
+        id: apiKeys.id,
+        orgId: apiKeys.orgId,
+        keyCiphertext: apiKeys.keyCiphertext,
+        keyIv: apiKeys.keyIv,
+      })
       .from(apiKeys)
-      .where(eq(apiKeys.isActive, true))
-      .limit(1);
+      .where(eq(apiKeys.isActive, true));
 
-    if (!keyRecord) {
+    let matchedOrgId: string | null = null;
+
+    for (const key of activeKeys) {
+      try {
+        const decrypted = await decryptApiKey(key.keyCiphertext, key.keyIv, key.orgId);
+        if (decrypted === token) {
+          matchedOrgId = key.orgId;
+          break;
+        }
+      } catch {
+        // Skip keys that fail to decrypt
+      }
+    }
+
+    if (!matchedOrgId) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
@@ -34,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     const { level, message, source, metadata, projectId, timestamp } = parsed.data;
     await db.insert(logs).values({
-      orgId: keyRecord.orgId,
+      orgId: matchedOrgId,
       level,
       message,
       source: source ?? "sdk",
