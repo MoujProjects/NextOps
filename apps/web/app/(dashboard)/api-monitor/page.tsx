@@ -31,10 +31,10 @@ export default async function ApiMonitorPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Calls Today" value={formatNumber(totalCalls)} icon={Activity} accent="blue" />
-        <StatCard title="Avg Latency" value={avgLatency ? formatMs(avgLatency) : "—"} icon={Zap} accent="mint" />
-        <StatCard title="Error Rate" value={`${errorRate}%`} icon={AlertCircle} accent="danger" />
-        <StatCard title="Cost Today" value={formatCents(totalCost)} icon={TrendingUp} accent="violet" />
+        <StatCard title="Calls Today" value={formatNumber(totalCalls)} icon={<Activity className="w-5 h-5" />} accent="blue" />
+        <StatCard title="Avg Latency" value={avgLatency ? formatMs(avgLatency) : "—"} icon={<Zap className="w-5 h-5" />} accent="mint" />
+        <StatCard title="Error Rate" value={`${errorRate}%`} icon={<AlertCircle className="w-5 h-5" />} accent="danger" />
+        <StatCard title="Cost Today" value={formatCents(totalCost)} icon={<TrendingUp className="w-5 h-5" />} accent="violet" />
       </div>
 
       <ApiCallsChart />

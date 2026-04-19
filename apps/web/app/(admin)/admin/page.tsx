@@ -30,10 +30,10 @@ export default async function AdminPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="Total Orgs" value="42" icon={Building} accent="blue" />
-        <StatCard title="Total Users" value="187" icon={Users} accent="violet" />
-        <StatCard title="API Calls Today" value="1.2M" icon={Activity} accent="mint" />
-        <StatCard title="Revenue MRR" value="$12,400" icon={Activity} accent="blue" />
+        <StatCard title="Total Orgs" value="42" icon={<Building className="w-5 h-5" />} accent="blue" />
+        <StatCard title="Total Users" value="187" icon={<Users className="w-5 h-5" />} accent="violet" />
+        <StatCard title="API Calls Today" value="1.2M" icon={<Activity className="w-5 h-5" />} accent="mint" />
+        <StatCard title="Revenue MRR" value="$12,400" icon={<Activity className="w-5 h-5" />} accent="blue" />
       </div>
 
       <GlassPanel className="overflow-hidden p-0">
@@ -45,7 +45,7 @@ export default async function AdminPage() {
             <div key={org.id} className="flex items-center gap-4 px-5 py-4 hover:bg-[var(--surface-hover)] transition-colors">
               <div className="flex-1">
                 <p className="text-sm font-medium text-[var(--text-primary)]">{org.name}</p>
-                <p className="text-xs text-[var(--text-muted)]">{org.members} members · {org.projects} projects</p>
+                <p className="text-xs text-[var(--text-muted)]">{org.members} members Â· {org.projects} projects</p>
               </div>
               <Badge variant={org.plan === "enterprise" ? "violet" : org.plan === "pro" ? "default" : "secondary"}>
                 {org.plan}

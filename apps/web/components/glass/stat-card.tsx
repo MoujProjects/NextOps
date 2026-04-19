@@ -2,13 +2,13 @@
 
 import { cn, formatNumber } from "@/lib/utils";
 import { motion } from "framer-motion";
-import type { LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 
 interface StatCardProps {
   title: string;
   value: string | number;
   subtitle?: string;
-  icon?: LucideIcon;
+  icon?: ReactNode;
   trend?: { value: number; label?: string };
   accent?: "blue" | "violet" | "mint" | "danger" | "warn";
   className?: string;
@@ -22,7 +22,7 @@ const accentStyles = {
   warn: { icon: "text-[var(--accent-warn)]", bg: "bg-[var(--accent-warn)]/10", border: "border-[var(--accent-warn)]/20" },
 };
 
-export function StatCard({ title, value, subtitle, icon: Icon, trend, accent = "blue", className }: StatCardProps) {
+export function StatCard({ title, value, subtitle, icon, trend, accent = "blue", className }: StatCardProps) {
   const styles = accentStyles[accent];
   const displayValue = typeof value === "number" ? formatNumber(value) : value;
 
@@ -45,9 +45,9 @@ export function StatCard({ title, value, subtitle, icon: Icon, trend, accent = "
             </div>
           )}
         </div>
-        {Icon && (
+        {icon && (
           <div className={cn("flex-shrink-0 p-2.5 rounded-lg", styles.bg, styles.border, "border")}>
-            <Icon className={cn("w-5 h-5", styles.icon)} />
+            <div className={cn("w-5 h-5", styles.icon)}>{icon}</div>
           </div>
         )}
       </div>

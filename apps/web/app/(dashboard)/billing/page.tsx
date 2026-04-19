@@ -29,9 +29,9 @@ export default async function BillingPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatCard title="API Costs" value={formatCents(totalApiCost)} icon={TrendingDown} accent="violet" subtitle="This month" />
-        <StatCard title="Plan" value={org.plan?.charAt(0).toUpperCase() + org.plan?.slice(1)} icon={CreditCard} accent="blue" />
-        <StatCard title="Events" value={String(billingEvents.length)} icon={DollarSign} accent="mint" />
+        <StatCard title="API Costs" value={formatCents(totalApiCost)} icon={<TrendingDown className="w-5 h-5" />} accent="violet" subtitle="This month" />
+        <StatCard title="Plan" value={org.plan?.charAt(0).toUpperCase() + org.plan?.slice(1)} icon={<CreditCard className="w-5 h-5" />} accent="blue" />
+        <StatCard title="Events" value={String(billingEvents.length)} icon={<DollarSign className="w-5 h-5" />} accent="mint" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

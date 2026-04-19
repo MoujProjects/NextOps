@@ -37,10 +37,10 @@ export default async function DashboardPage() {
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard title="API Calls Today" value={formatNumber(totalCalls)} icon={Activity} accent="blue" />
-        <StatCard title="Avg Latency" value={avgLatency ? formatMs(avgLatency) : "—"} subtitle="p50 across all keys" icon={Zap} accent="mint" />
-        <StatCard title="Cost This Month" value={formatCents(totalCost)} icon={DollarSign} accent="violet" />
-        <StatCard title="Active Alerts" value={String(activeAlerts.length)} subtitle={activeAlerts.length > 0 ? `${activeAlerts.filter(a => a.severity === "critical").length} critical` : "All clear"} icon={AlertTriangle} accent={activeAlerts.length > 0 ? "danger" : "mint"} />
+        <StatCard title="API Calls Today" value={formatNumber(totalCalls)} icon={<Activity className="w-5 h-5" />} accent="blue" />
+        <StatCard title="Avg Latency" value={avgLatency ? formatMs(avgLatency) : "—"} subtitle="p50 across all keys" icon={<Zap className="w-5 h-5" />} accent="mint" />
+        <StatCard title="Cost This Month" value={formatCents(totalCost)} icon={<DollarSign className="w-5 h-5" />} accent="violet" />
+        <StatCard title="Active Alerts" value={String(activeAlerts.length)} subtitle={activeAlerts.length > 0 ? `${activeAlerts.filter(a => a.severity === "critical").length} critical` : "All clear"} icon={<AlertTriangle className="w-5 h-5" />} accent={activeAlerts.length > 0 ? "danger" : "mint"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
