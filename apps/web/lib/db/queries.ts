@@ -3,7 +3,7 @@ import {
   organizations, members, projects, apiKeys, apiCalls,
   websites, uptimeChecks, alerts, logs, activity, integrations, billingEvents, invitations,
 } from "./schema";
-import { eq, and, desc, gte, count, sum, avg } from "drizzle-orm";
+import { eq, and, desc, gte, count, sum, avg, inArray, sql } from "drizzle-orm";
 
 // ── Org ────────────────────────────────────────────────────────────────────
 export async function getOrgBySlug(slug: string) {
@@ -115,6 +115,81 @@ export async function getOrgBillingEvents(orgId: string, limit = 50) {
   return db.select().from(billingEvents)
     .where(eq(billingEvents.orgId, orgId))
     .orderBy(desc(billingEvents.createdAt))
+    .limit(limit);
+}
+
+// ── Project-scoped queries ─────────────────────────────────────────────────
+export async function getProjectApiKeys(projectId: string, orgId: string) {
+  return db.select().from(apiKeys)
+    .where(and(eq(apiKeys.projectId, projectId), eq(apiKeys.orgId, orgId), eq(apiKeys.isActive, true)))
+    .orderBy(desc(apiKeys.createdAt));
+}
+
+export async function getProjectApiCallsStats(projectId: string, orgId: string, since: Date) {
+  // Get all key IDs for this project
+  const keys = await db.select({ id: apiKeys.id }).from(apiKeys)
+    .where(and(eq(apiKeys.projectId, projectId), eq(apiKeys.orgId, orgId)));
+  const keyIds = keys.map(k => k.id);
+  if (keyIds.length === 0) return { total: 0, totalCost: 0, avgLatency: 0, errorCount: 0 };
+
+  const [stats] = await db
+    .select({
+      total: count(),
+      totalCost: sum(apiCalls.costCents),
+      avgLatency: avg(apiCalls.latencyMs),
+    })
+    .from(apiCalls)
+    .where(and(
+      inArray(apiCalls.keyId, keyIds),
+      gte(apiCalls.createdAt, since),
+    ));
+
+  const [errors] = await db
+    .select({ errorCount: count() })
+    .from(apiCalls)
+    .where(and(
+      inArray(apiCalls.keyId, keyIds),
+      gte(apiCalls.createdAt, since),
+      gte(apiCalls.statusCode, 400),
+    ));
+
+  return {
+    total: Number(stats?.total ?? 0),
+    totalCost: Number(stats?.totalCost ?? 0),
+    avgLatency: Number(stats?.avgLatency ?? 0),
+    errorCount: Number(errors?.errorCount ?? 0),
+  };
+}
+
+export async function getProjectRecentApiCalls(projectId: string, orgId: string, limit = 30) {
+  const keys = await db.select({ id: apiKeys.id }).from(apiKeys)
+    .where(and(eq(apiKeys.projectId, projectId), eq(apiKeys.orgId, orgId)));
+  const keyIds = keys.map(k => k.id);
+  if (keyIds.length === 0) return [];
+
+  return db.select().from(apiCalls)
+    .where(inArray(apiCalls.keyId, keyIds))
+    .orderBy(desc(apiCalls.createdAt))
+    .limit(limit);
+}
+
+export async function getProjectWebsites(projectId: string, orgId: string) {
+  return db.select().from(websites)
+    .where(and(eq(websites.projectId, projectId), eq(websites.orgId, orgId)))
+    .orderBy(desc(websites.createdAt));
+}
+
+export async function getProjectLogs(projectId: string, orgId: string, limit = 50) {
+  return db.select().from(logs)
+    .where(and(eq(logs.projectId, projectId), eq(logs.orgId, orgId)))
+    .orderBy(desc(logs.createdAt))
+    .limit(limit);
+}
+
+export async function getProjectActivity(projectId: string, orgId: string, limit = 20) {
+  return db.select().from(activity)
+    .where(and(eq(activity.orgId, orgId), eq(activity.resourceId, projectId)))
+    .orderBy(desc(activity.createdAt))
     .limit(limit);
 }
 

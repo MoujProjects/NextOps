@@ -53,6 +53,7 @@ export async function createProject(raw: unknown): Promise<ActionResult<{ id: st
     });
 
     revalidatePath("/projects");
+    revalidatePath(`/projects/${project.id}`);
     return { success: true, data: { id: project.id } };
   } catch (err) {
     logger.error("createProject failed", err);

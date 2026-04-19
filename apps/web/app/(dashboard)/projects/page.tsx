@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { GitBranch, ExternalLink, FolderKanban } from "lucide-react";
 import { StatusDot } from "@/components/glass/status-dot";
 import { CreateProjectDialog } from "./create-project-dialog";
+import Link from "next/link";
 
 const statusMap: Record<string, "online" | "degraded" | "offline"> = {
   live: "online", staging: "degraded", dev: "offline",
@@ -32,7 +33,8 @@ export default async function ProjectsPage() {
         {projectsData.map((project) => {
           const techStack = (project.techStack as string[]) ?? [];
           return (
-            <GlassPanel key={project.id} className="p-5 hover:border-[var(--border-strong)] transition-all duration-200 cursor-pointer group">
+            <Link key={project.id} href={`/projects/${project.id}`}>
+            <GlassPanel className="p-5 hover:border-[var(--border-strong)] transition-all duration-200 cursor-pointer group">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[var(--accent-blue)]/20 to-[var(--accent-violet)]/20 border border-[var(--border)] flex items-center justify-center">
@@ -72,6 +74,7 @@ export default async function ProjectsPage() {
                 )}
               </div>
             </GlassPanel>
+            </Link>
           );
         })}
 

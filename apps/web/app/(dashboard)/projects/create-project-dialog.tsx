@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ export function CreateProjectDialog({ asCard }: Props) {
   const [description, setDescription] = useState("");
   const [repoUrl, setRepoUrl] = useState("");
   const { toast } = useToast();
+  const router = useRouter();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,6 +34,9 @@ export function CreateProjectDialog({ asCard }: Props) {
         toast({ title: "Project created", variant: "success" as never });
         setOpen(false);
         setName(""); setDescription(""); setRepoUrl("");
+        if (result.data?.id) {
+          router.push(`/projects/${result.data.id}`);
+        }
       } else {
         toast({ title: "Error", description: result.error, variant: "destructive" });
       }
